@@ -1,7 +1,7 @@
 # pipex (42Porto - 42Cursus) <img src="https://github.com/devicons/devicon/blob/master/icons/linux/linux-original.svg" title="Linux" alt="Linux Logo" width="50" height="60" align="right" /> <img src="https://github.com/devicons/devicon/blob/master/icons/c/c-original.svg" title="C" alt="C Logo" width="55" height="55" align="right" />&nbsp; 
 
 ## Grade: Didn't submit
-It's a choice project where I've choose minitalk.  
+Pipex is a choice project and I've choosen minitalk therefore I'm unable to submit it. 
 Done for consolidation of processes theme.
 
 ### Installing and running the project:
