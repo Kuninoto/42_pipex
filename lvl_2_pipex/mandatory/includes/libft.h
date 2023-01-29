@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/08/14 01:35:12 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/07 20:14:14 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/29 02:25:48 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,6 @@ int			prt_hexa(unsigned int nbr, bool upper_case);
 char		*join_free(char *to_free, char *to_append);
 // Returns s1+s2, creating a new string, and frees s2
 char		*join_freev2(char *s1, char *s2);
-/* Prints Error: error_msg, followed by a newline, 
-   to STDERR and exits the program on exit_code */
-void		panic(char *error_msg, int exit_code);
 // Frees all elements in the matrix and its pointer
 void		free_matrix(char **matrix);
 // Checks if both strings passed as parameters are absolutely equal

@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_nbr_args.c                                     :+:      :+:    :+:   */
+/*   destroy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/07 15:46:46 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/07 20:19:33 by nnuno-ca         ###   ########.fr       */
+/*   Created: 2023/01/29 02:20:14 by nnuno-ca          #+#    #+#             */
+/*   Updated: 2023/01/29 03:18:58 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
+#include "pipex.h"
 
-size_t	get_nbr_args(char **cmd)
+void	destroy(t_pipex *data)
 {
-	size_t	nbr_args;
-	size_t	i;
-
-	nbr_args = 0;
-	i = 0;
-	while (cmd[i] != NULL)
-	{
-		nbr_args += 1;
-		i += 1;
-	}
-	return (nbr_args);
+	if (data->paths)
+		free_matrix(data->paths);
+	if (data->l_cmd.argv)
+		free_matrix(data->l_cmd.argv);
+	if (data->r_cmd.argv)
+		free_matrix(data->r_cmd.argv);
 }

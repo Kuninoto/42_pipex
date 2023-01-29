@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy_cmd_list.c                                 :+:      :+:    :+:   */
+/*   panic.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/07 22:26:14 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/07 22:54:20 by nnuno-ca         ###   ########.fr       */
+/*   Created: 2023/01/29 02:03:43 by nnuno-ca          #+#    #+#             */
+/*   Updated: 2023/01/29 02:19:32 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/pipex_bonus.h"
+#include "pipex.h"
 
-void	destroy_cmd_list(t_cmd *cmd_list, int nbr_of_cmds)
+void	panic(t_pipex *data, char *error_msg, int exit_status)
 {
-	int	i;
-
-	i = 0;
-	while (i < nbr_of_cmds)
-	{
-		free_matrix(cmd_list[i].argv);
-		i += 1;
-	}
+	if (data)
+		destroy(data);
+	ft_putstr_fd("Error: ", STDERR_FILENO);
+	ft_putendl_fd(error_msg, STDERR_FILENO);
+	exit(exit_status);
 }
