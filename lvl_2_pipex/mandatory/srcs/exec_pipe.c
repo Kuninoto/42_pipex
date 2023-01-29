@@ -6,13 +6,13 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 18:32:15 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/07 21:30:27 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/29 03:01:07 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-char	*get_bin_path(char *cmd, char **paths)
+static char	*get_bin_path(char *cmd, char **paths)
 {
 	size_t	i;
 	char	*tmp;
@@ -31,52 +31,69 @@ char	*get_bin_path(char *cmd, char **paths)
 	return (NULL);
 }
 
-void	exec_cmd(t_cmd *cmd, t_pipex *data, char **envp)
+static void	exec_cmd(t_cmd *cmd, t_pipex *data)
 {
 	char	*bin_path;
+	bool	absolute_path;
 
-	bin_path = get_bin_path(cmd->argv[0], data->paths);
-	if (bin_path == NULL || execve(bin_path, cmd->argv, envp) == -1)
+	if (cmd->argv[0][0] == '.' || cmd->argv[0][0] == '/')
 	{
-		ft_printf("%s: command not found\n", cmd->argv[0]);
-		free(bin_path);
-		destroy_pipex(data);
-		exit(127);
+		bin_path = cmd->argv[0];
+		absolute_path = true;
 	}
-	free(bin_path);
+	else
+		bin_path = get_bin_path(cmd->argv[0], data->paths);
+	if (!bin_path)
+		panic(data, CMD_NOT_FOUND, 127);
+	if (execve(bin_path, cmd->argv, data->envp) == -1)
+	{
+		destroy(data);
+		free(bin_path);
+		perror("Error");
+		exit(EXIT_FAILURE);
+	}
+	if (!absolute_path)
+		free(bin_path);
+	exit(EXIT_SUCCESS);
 }
 
-void	left_side(int *pipedes, t_pipex *data, char **envp)
+static void	left_side(int *pipedes, t_pipex *data)
 {
 	dup2(pipedes[1], STDOUT_FILENO);
 	close(pipedes[0]);
 	close(pipedes[1]);
-	exec_cmd(&data->l_cmd, data, envp);
+	dup2(data->infile_fd, STDIN_FILENO);
+	exec_cmd(&data->l_cmd, data);
 }
 
-void	right_side(int *pipedes, t_pipex *data, char **envp)
+static void	right_side(int *pipedes, t_pipex *data)
 {
 	dup2(pipedes[0], STDIN_FILENO);
+	close(pipedes[0]);
 	close(pipedes[1]);
-	dup2(data->rdrs.outfile_fd, STDOUT_FILENO);
-	exec_cmd(&data->r_cmd, data, envp);
+	dup2(data->outfile_fd, STDOUT_FILENO);
+	exec_cmd(&data->r_cmd, data);
 }
 
 //	bytes written on pipedes[1] can be read on pipedes[0]
-void	exec_pipe(t_pipex *data, char **envp)
+void	exec_pipe(t_pipex *data)
 {
 	int		pipedes[2];
 	pid_t	left_child;
 	pid_t	right_child;
 
 	if (pipe(pipedes) == -1)
-		panic(ERR_PIPE, EXIT_FAILURE);
+		panic(data, PIPE_ERR, EXIT_FAILURE);
 	left_child = fork();
+	if (left_child == -1)
+		panic(data, FORK_ERR, EXIT_FAILURE);
 	if (left_child == 0)
-		left_side(&pipedes[0], data, envp);
+		left_side(pipedes, data);
 	right_child = fork();
+	if (right_child == -1)
+		panic(data, FORK_ERR, EXIT_FAILURE);
 	if (right_child == 0)
-		right_side(&pipedes[0], data, envp);
+		right_side(pipedes, data);
 	close(pipedes[0]);
 	close(pipedes[1]);
 	waitpid(left_child, NULL, 0);
