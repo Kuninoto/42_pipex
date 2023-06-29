@@ -1,24 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   panic.c                                            :+:      :+:    :+:   */
+/*   only_isspaces.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/29 02:03:43 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/29 02:19:32 by nnuno-ca         ###   ########.fr       */
+/*   Created: 2022/12/22 22:13:53 by nnuno-ca          #+#    #+#             */
+/*   Updated: 2023/01/22 01:06:54 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-/* Calls destroy() on <data>, prints "pipex: error: <error_msg>\n"
-to STDERR and exits the program on <exit_status> */
-void	panic(t_pipex *data, char *error_msg, int exit_status)
+bool	only_spaces(const char *str)
 {
-	if (data)
-		destroy(data);
-	if (error_msg)
-		ft_dprintf(STDERR_FILENO, "pipex: error: %s\n", error_msg);
-	exit(exit_status);
+	size_t	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!is_spaces(str[i]))
+			return (false);
+		i += 1;
+	}
+	return (true);
 }

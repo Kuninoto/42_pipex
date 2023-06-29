@@ -14,12 +14,13 @@
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_pipex		data;
+	t_pipex	data;
+	int		pipe_exit_status;
 
 	if (argc != 5)
-		panic(NULL, INVALID_NBR_ARGS, EXIT_FAILURE);
+		panic(NULL, INVALID_ARGC, EXIT_FAILURE);
 	data = init_data(argv, envp);
-	exec_pipe(&data);
+	pipe_exit_status = exec_pipe(&data);
 	destroy(&data);
-	return (EXIT_SUCCESS);
+	return (pipe_exit_status);
 }

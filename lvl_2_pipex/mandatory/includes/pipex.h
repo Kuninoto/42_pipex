@@ -13,20 +13,22 @@
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft.h"
+# include "../../libft/libft.h"
 # include <sys/wait.h> // wait(), waitpid()
 # include <fcntl.h> // open(), access()
+# include <string.h> // strerror()
+# include <errno.h>
 
 // ERROR MESSAGES
-# define INVALID_NBR_ARGS "Invalid number of arguments"
-
-# define INFILE_ERR "Unable to open infile file descriptor"
-# define OUTFILE_ERR "Unable to open outfile file descriptor"
+# define INVALID_ARGC "Invalid number of arguments"
 
 # define FORK_ERR "fork() failed"
 # define PIPE_ERR "pipe() failed"
 
 # define CMD_NOT_FOUND "command not found"
+
+# define READ_END 0
+# define WRITE_END 1
 
 typedef struct s_command {
 	int		argc;
@@ -36,18 +38,17 @@ typedef struct s_command {
 typedef struct s_pipex {
 	char	**envp;
 	char	**paths;
-	t_cmd	l_cmd;
-	t_cmd	r_cmd;
+	t_cmd	left_cmd;
+	t_cmd	right_cmd;
 	int		infile_fd;
 	int		outfile_fd;
 }				t_pipex;
 
 t_pipex	init_data(char **argv, char **envp);
-void	exec_pipe(t_pipex *data);
-/* Frees commands' argv's and paths */
+int		exec_pipe(t_pipex *data);
+
 void	destroy(t_pipex *data);
-/* Calls destroy() on data, prints "Error:<error_msg>\n" 
-to STDERR and exits the program on exit_status */
+
 void	panic(t_pipex *data, char *error_msg, int exit_status);
 
-#endif
+#endif // PIPEX_H

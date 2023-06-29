@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   panic.c                                            :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/29 02:03:43 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/29 02:19:32 by nnuno-ca         ###   ########.fr       */
+/*   Created: 2022/08/16 21:25:58 by nnuno-ca          #+#    #+#             */
+/*   Updated: 2023/01/22 02:45:28 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-/* Calls destroy() on <data>, prints "pipex: error: <error_msg>\n"
-to STDERR and exits the program on <exit_status> */
-void	panic(t_pipex *data, char *error_msg, int exit_status)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	if (data)
-		destroy(data);
-	if (error_msg)
-		ft_dprintf(STDERR_FILENO, "pipex: error: %s\n", error_msg);
-	exit(exit_status);
+	unsigned char		*mem_allocated;
+	unsigned int		total;
+	size_t				i;
+
+	if (nmemb == 0 || size == 0)
+		return (NULL);
+	total = nmemb * size;
+	mem_allocated = malloc(total);
+	if (mem_allocated == NULL)
+		return (NULL);
+	i = 0;
+	while (total-- > 0)
+		mem_allocated[i++] = 0;
+	return ((void *)mem_allocated);
 }

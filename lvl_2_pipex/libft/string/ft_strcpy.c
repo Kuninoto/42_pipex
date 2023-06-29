@@ -1,24 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   panic.c                                            :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/29 02:03:43 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/29 02:19:32 by nnuno-ca         ###   ########.fr       */
+/*   Created: 2022/12/22 15:54:35 by roramos           #+#    #+#             */
+/*   Updated: 2023/01/22 14:44:11 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-/* Calls destroy() on <data>, prints "pipex: error: <error_msg>\n"
-to STDERR and exits the program on <exit_status> */
-void	panic(t_pipex *data, char *error_msg, int exit_status)
+char	*ft_strcpy(char *to_copy)
 {
-	if (data)
-		destroy(data);
-	if (error_msg)
-		ft_dprintf(STDERR_FILENO, "pipex: error: %s\n", error_msg);
-	exit(exit_status);
+	char		*copy;
+	size_t		i;
+
+	if (!to_copy)
+	{
+		copy = malloc(2 * sizeof(char));
+		copy[0] = ' ';
+		copy[1] = '\0';
+		return (copy);
+	}
+	copy = malloc((ft_strlen(to_copy) + 1) * sizeof(char));
+	i = 0;
+	while (to_copy[i])
+	{
+		copy[i] = to_copy[i];
+		i += 1;
+	}
+	copy[i] = '\0';
+	return (copy);
 }

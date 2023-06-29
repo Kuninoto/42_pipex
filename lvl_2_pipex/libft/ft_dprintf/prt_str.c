@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   panic.c                                            :+:      :+:    :+:   */
+/*   prt_str.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/29 02:03:43 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/29 02:19:32 by nnuno-ca         ###   ########.fr       */
+/*   Created: 2022/11/15 01:08:11 by nnuno-ca          #+#    #+#             */
+/*   Updated: 2023/01/23 23:15:02 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "libft.h"
 
-/* Calls destroy() on <data>, prints "pipex: error: <error_msg>\n"
-to STDERR and exits the program on <exit_status> */
-void	panic(t_pipex *data, char *error_msg, int exit_status)
+int	prt_str(int fd, char const *str)
 {
-	if (data)
-		destroy(data);
-	if (error_msg)
-		ft_dprintf(STDERR_FILENO, "pipex: error: %s\n", error_msg);
-	exit(exit_status);
+	if (str == NULL)
+		return (write(fd, "(null)", 6));
+	else
+		return (write(fd, str, ft_strlen(str)));
 }

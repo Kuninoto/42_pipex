@@ -49,13 +49,13 @@ t_pipex	init_data(char **argv, char **envp)
 
 	data.paths = get_paths(envp);
 	data.envp = envp;
-	data.l_cmd = init_cmd(argv[2]);
-	data.r_cmd = init_cmd(argv[3]);
+	data.left_cmd = init_cmd(argv[2]);
+	data.right_cmd = init_cmd(argv[3]);
 	data.infile_fd = open(argv[1], O_RDONLY);
 	if (data.infile_fd == -1)
-		panic(&data, INFILE_ERR, 128);
+		ft_dprintf(STDERR_FILENO, "pipex: %s: %s\n", argv[1], strerror(errno));
 	data.outfile_fd = open(argv[4], O_TRUNC | O_CREAT | O_RDWR, 0777);
 	if (data.outfile_fd == -1)
-		panic(&data, OUTFILE_ERR, 128);
+		ft_dprintf(STDERR_FILENO, "pipex: %s: %s\n", argv[4], strerror(errno));
 	return (data);
 }

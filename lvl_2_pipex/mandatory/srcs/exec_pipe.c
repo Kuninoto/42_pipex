@@ -10,8 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "pipex.h"
 
+//	Searches on the PATH environment
+//	variable's paths for the correct path to the binary of the
+//	input command
 static char	*get_bin_path(char *cmd, char **paths)
 {
 	size_t	i;
@@ -31,71 +34,78 @@ static char	*get_bin_path(char *cmd, char **paths)
 	return (NULL);
 }
 
+//	Searches for the commands' binary paths
+//	(get_bin_path() or uses the literal input
+//	in case it is already a path) and executes them
 static void	exec_cmd(t_cmd *cmd, t_pipex *data)
 {
 	char	*bin_path;
-	bool	absolute_path;
+	bool	is_a_path;
 
 	if (cmd->argv[0][0] == '.' || cmd->argv[0][0] == '/')
 	{
+		is_a_path = true;
 		bin_path = cmd->argv[0];
-		absolute_path = true;
 	}
 	else
 		bin_path = get_bin_path(cmd->argv[0], data->paths);
 	if (!bin_path)
-		panic(data, CMD_NOT_FOUND, 127);
+	{
+		ft_dprintf(STDERR_FILENO, "%s: command not found\n", cmd->argv[0]);
+		panic(data, NULL, 127);
+	}
 	if (execve(bin_path, cmd->argv, data->envp) == -1)
 	{
-		destroy(data);
 		free(bin_path);
-		perror("Error");
-		exit(EXIT_FAILURE);
+		panic(data, NULL, 127);
 	}
-	if (!absolute_path)
+	if (!is_a_path)
 		free(bin_path);
 	exit(EXIT_SUCCESS);
 }
 
+// Handles the left side of a pipe
 static void	left_side(int *pipedes, t_pipex *data)
 {
-	dup2(pipedes[1], STDOUT_FILENO);
-	close(pipedes[0]);
-	close(pipedes[1]);
+	dup2(pipedes[WRITE_END], STDOUT_FILENO);
+	close(pipedes[READ_END]);
+	close(pipedes[WRITE_END]);
 	dup2(data->infile_fd, STDIN_FILENO);
-	exec_cmd(&data->l_cmd, data);
+	exec_cmd(&data->left_cmd, data);
 }
 
+// Handles the right side of a pipe
 static void	right_side(int *pipedes, t_pipex *data)
 {
-	dup2(pipedes[0], STDIN_FILENO);
-	close(pipedes[0]);
-	close(pipedes[1]);
+	dup2(pipedes[READ_END], STDIN_FILENO);
+	close(pipedes[READ_END]);
+	close(pipedes[WRITE_END]);
 	dup2(data->outfile_fd, STDOUT_FILENO);
-	exec_cmd(&data->r_cmd, data);
+	exec_cmd(&data->right_cmd, data);
 }
 
-//	bytes written on pipedes[1] can be read on pipedes[0]
-void	exec_pipe(t_pipex *data)
+int	exec_pipe(t_pipex *data)
 {
 	int		pipedes[2];
-	pid_t	left_child;
-	pid_t	right_child;
+	pid_t	left_child_pid;
+	pid_t	right_child_pid;
+	int		exit_status;
 
 	if (pipe(pipedes) == -1)
 		panic(data, PIPE_ERR, EXIT_FAILURE);
-	left_child = fork();
-	if (left_child == -1)
+	left_child_pid = fork();
+	if (left_child_pid == -1)
 		panic(data, FORK_ERR, EXIT_FAILURE);
-	if (left_child == 0)
+	else if (left_child_pid == 0)
 		left_side(pipedes, data);
-	right_child = fork();
-	if (right_child == -1)
+	right_child_pid = fork();
+	if (right_child_pid == -1)
 		panic(data, FORK_ERR, EXIT_FAILURE);
-	if (right_child == 0)
+	else if (right_child_pid == 0)
 		right_side(pipedes, data);
-	close(pipedes[0]);
-	close(pipedes[1]);
-	waitpid(left_child, NULL, 0);
-	waitpid(right_child, NULL, 0);
+	close(pipedes[READ_END]);
+	close(pipedes[WRITE_END]);
+	waitpid(left_child_pid, &exit_status, WUNTRACED);
+	waitpid(right_child_pid, &exit_status, WUNTRACED);
+	return (WEXITSTATUS(exit_status));
 }
