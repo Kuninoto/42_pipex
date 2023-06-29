@@ -12,12 +12,17 @@
 
 #include "pipex.h"
 
+/* Frees allocated memory and closes the opened file descriptors */
 void	destroy(t_pipex *data)
 {
+	if (data->infile_fd != -1)
+		close(data->infile_fd);
+	if (data->outfile_fd != -1)
+		close(data->outfile_fd);
 	if (data->paths)
 		free_matrix(data->paths);
-	if (data->l_cmd.argv)
-		free_matrix(data->l_cmd.argv);
-	if (data->r_cmd.argv)
-		free_matrix(data->r_cmd.argv);
+	if (data->left_cmd.argv)
+		free_matrix(data->left_cmd.argv);
+	if (data->right_cmd.argv)
+		free_matrix(data->right_cmd.argv);
 }

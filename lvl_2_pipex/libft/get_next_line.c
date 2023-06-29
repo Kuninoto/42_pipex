@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/06 00:47:06 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/11/23 22:31:15 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/22 14:06:46 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static char	*clean_printed(char	*global_buffer)
 
 	i = 0;
 	while (global_buffer[i] && global_buffer[i] != '\n')
-		i++;
+		i += 1;
 	if (!global_buffer[i])
 	{
 		free(global_buffer);
@@ -29,7 +29,7 @@ static char	*clean_printed(char	*global_buffer)
 	new = malloc(((ft_strlen(global_buffer) - i) + 1) * sizeof(char));
 	if (!new)
 		return (NULL);
-	i++;
+	i += 1;
 	j = 0;
 	while (global_buffer[i])
 		new[j++] = global_buffer[i++];
@@ -49,14 +49,14 @@ static char	*get_line(char *global_buffer)
 	if (!global_buffer[i])
 		return (NULL);
 	while (global_buffer[len] && global_buffer[len] != '\n')
-		len++;
+		len += 1;
 	line = malloc((len + 2) * sizeof(char));
 	if (!line)
 		return (NULL);
 	while (i <= len)
 	{
 		line[i] = global_buffer[i];
-		i++;
+		i += 1;
 	}
 	line[i] = '\0';
 	return (line);
@@ -111,7 +111,7 @@ static char	*read_buffsize(int fd, char *global_buffer)
 		}
 		buffer[bytes_rd] = '\0';
 		global_buffer = join_n_free(global_buffer, buffer);
-		if (gnl_strchr(global_buffer, '\n') == true)
+		if (is_onstr(global_buffer, '\n') == true)
 			break ;
 	}
 	free(buffer);

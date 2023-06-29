@@ -11,46 +11,46 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./mandatory/includes/
-RM = rm -rf
+CFLAGS = -Wall -Wextra -Werror
+INC = -I./mandatory/includes/
+VPATH = mandatory mandatory/srcs mandatory/srcs/utils
 LIBFT = ./libft/libft.a
+RM = rm -rf
+
+UTILS = destroy panic
+GENERAL = init_data exec_pipe
 
 NAME = pipex
-SRCS = mandatory/srcs/utils/destroy.c\
-	   mandatory/srcs/utils/panic.c\
-	   mandatory/srcs/init_data.c\
-	   mandatory/srcs/exec_pipe.c\
-	   mandatory/main.c
-OBJS = $(SRCS:.c=.o)
-
-BONUS_SRCS = bonus/ \
-	   		 bonus/main.c
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
+SRCS = $(addsuffix .c, $(UTILS))\
+	   $(addsuffix .c, $(GENERAL))\
+	   main.c
+OBJ_DIR = obj
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C ./libft
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o pipex
+$(OBJ_DIR):
+	mkdir -p obj
 
-bonus: $(BONUS_OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBFT) -o pipex
+$(OBJ_DIR)/%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ $(INC)
+
+$(NAME): $(OBJ_DIR) $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o pipex
 
 clean:
 	$(MAKE) clean -C ./libft
-	$(RM) $(OBJS)
-	$(RM) $(BONUS_OBJS)
-	
+	$(RM) $(OBJ_DIR)
+
 fclean: clean
 	$(MAKE) fclean -C ./libft
 	$(RM) $(NAME)
 	
 re: fclean all
 
-run: all clean
-
-.PHONY: all pipex bonus clean fclean re
+.PHONY: all pipex clean fclean re
 
 .SILENT:
