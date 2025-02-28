@@ -1,15 +1,8 @@
 # pipex (42Porto - 42Cursus) <img src="https://github.com/devicons/devicon/blob/master/icons/linux/linux-original.svg" title="Linux" alt="Linux Logo" width="50" height="60" align="right" /> <img src="https://github.com/devicons/devicon/blob/master/icons/c/c-original.svg" title="C" alt="C Logo" width="55" height="55" align="right" />&nbsp; 
 
 ## Grade: Didn't submit
-Pipex is a choice project and I've choosen minitalk; Therefore I'm unable to submit it. 
-Done for consolidation of processes theme.
 
-### Overview:
-Given command line arguments in the format:
-	./pipex <infile> <cmd1> <cmd2> <outfile>
-_pipex_ replicates the pipe functionality of the shell.
-
-###  Screenshot:
+###  Showcase:
 ![](./extras/showcase.png)
 
 ### Installing and running the project:
@@ -27,7 +20,7 @@ _pipex_ replicates the pipe functionality of the shell.
 
 	./pipex <infile> <cmd1> <cmd2> <outfile>
 
-###  Subject: [pipex en_subject](./extras/en.subject_pipex.pdf)
+###  Subject (v2): [pipex en_subject](./extras/en.subject_pipex.pdf)
 
 #### Makefile Available Targets:  
 `make` or `make all` - Makes _pipex_  
