@@ -1,9 +1,11 @@
 # pipex (42Porto - 42Cursus)  
 
 ### Showcase
+
 ![](./extras/showcase.png)
 
 ### Description
+
 A simple program that replicates the UNIX pipe functionality - introduction to Inter Process Communication (IPC).  
 
 ### Installing and running the project
