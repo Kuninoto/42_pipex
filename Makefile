@@ -12,8 +12,8 @@
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INC = -I./mandatory/includes/
-VPATH = mandatory mandatory/srcs mandatory/srcs/utils
+INC = -I./includes/
+VPATH = srcs srcs/utils
 LIBFT = ./libft/libft.a
 RM = rm -rf
 

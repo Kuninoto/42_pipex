@@ -1,32 +1,28 @@
-# pipex (42Porto - 42Cursus) <img src="https://github.com/devicons/devicon/blob/master/icons/linux/linux-original.svg" title="Linux" alt="Linux Logo" width="50" height="60" align="right" /> <img src="https://github.com/devicons/devicon/blob/master/icons/c/c-original.svg" title="C" alt="C Logo" width="55" height="55" align="right" />&nbsp; 
+# pipex (42Porto - 42Cursus)  
 
-## Grade: Didn't submit
-
-###  Showcase:
+### Showcase
 ![](./extras/showcase.png)
 
-### Installing and running the project:
+### Description
+A simple program that replicates the UNIX pipe functionality - introduction to Inter Process Communication (IPC).  
+
+### Installing and running the project
 
 1- Clone this repository
 	
 	git clone https://github.com/Kuninoto/42_pipex
-2- Navigate to _lvl_2_pipex_ and run `make`
+2- Compile and clean the generated object files that you won't need anymore
 	
-	cd 42_pipex/lvl_2_pipex && make
-3- `make clean` so that you don't keep those object files that you won't need anymore
-
-	make clean
-4- Run _pipex_ with your desired arguments
+	make && make clean
+3- Run `pipex`
 
 	./pipex <infile> <cmd1> <cmd2> <outfile>
 
-###  Subject (v2): [pipex en_subject](./extras/en.subject_pipex.pdf)
-
-#### Makefile Available Targets:  
-`make` or `make all` - Makes _pipex_  
+#### Makefile available targets  
+`make` or `make all` - Makes `pipex`  
 `make clean` - Deletes all the resulting object files  
-`make fclean` - Deletes _pipex_ and all the resulting object files  
-`make re` - fclean + all  
+`make fclean` - Deletes `pipex` and all the resulting object files  
+`make re` - `fclean` + `all`  
 
 ## Useful links
 [The fork() function in C](https://www.youtube.com/watch?v=cex9XrZCU14&list=PLfqABt5AS4FkW5mOn2Tn9ZZLLDwA3kZUY)  
@@ -35,7 +31,7 @@
 [Communicating between processes (using pipes) in C](https://www.youtube.com/watch?v=Mqb2dVRe0uo)  
 
 ## Disclaimer
-> At [42School](https://en.wikipedia.org/wiki/42_(school)), almost every project must be written in accordance to the [Norm](./extras/en_norm.pdf), the schools' coding standard. As a result, the implementation of certain parts may appear strange and for sure had room for improvement.
+> At [42School](https://en.wikipedia.org/wiki/42_(school)), almost every project must be written in accordance to the "Norm", the schools' coding standard. As a result, the implementation of certain parts may appear strange and for sure had room for improvement.
 
 ---
 Made by Nuno Carvalho (Kuninoto) | nnuno-ca@student.42porto.com  
